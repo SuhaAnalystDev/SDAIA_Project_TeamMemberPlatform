@@ -2,9 +2,9 @@
 
 A bilingual (Arabic/English) AI assistant platform for teams, with a guarded agent harness. The platform name is always "Team Member" in English, in both languages.
 
-Author: Suha Abdulrahman
+Name: Suha Abdulrahman
 
-Built for the [SDAIA Academy Agentic AI Systems Engineering capstone](https://sdaiaacademy.github.io/agentic-ai/): https://sdaiaacademy.github.io/agentic-ai/
+Built for the [Advanced Agentic AI Systems Engineering - SDAIA Academy](https://github.com/sdaiaacademy/agentic-ai/)
 
 ## What it is
 A team workspace where a manager invites members; each member gets personal assistants, can run tasks (summary, day planning, announcement) and shares a team channel. Posting to the channel needs a human approval enforced in code, which blocks prompt-injection attacks.
