@@ -34,16 +34,55 @@ static/ (SPA, i18n ar/en) -> app/main.py (routes, auth)
 ```
 
 ## Install and run
-Requirements: Python 3.11+ and [uv](https://docs.astral.sh/uv/) (`curl -LsSf https://astral.sh/uv/install.sh | sh`).
+
+### 1. Requirements
+- Python 3.11 or newer
+- [uv](https://docs.astral.sh/uv/): `curl -LsSf https://astral.sh/uv/install.sh | sh` (Windows PowerShell: `powershell -c "irm https://astral.sh/uv/install.ps1 | iex"`)
+
+### 2. Get the code
 ```bash
 git clone https://github.com/SuhaAnalystDev/SDAIA_Project_TeamMemberPlatform.git
 cd SDAIA_Project_TeamMemberPlatform
-cp .env-example .env        # then edit .env and paste your OpenRouter key (steps to get one are inside the file)
-uv run uvicorn app.main:app --reload     # open http://127.0.0.1:8000
 ```
-Sign up on the landing page: the first user creates the team and becomes its manager. The key is read only from `OPENROUTER_API_KEY` (backend only); `.env` is git-ignored.
-Without uv: `python -m venv .venv && .venv/bin/pip install "fastapi>=0.110" "uvicorn[standard]" httpx "mcp>=1.2,<2" python-dotenv pydantic`, then `.venv/bin/uvicorn app.main:app --reload`.
-With no key the app runs in **mock mode** (a deterministic, deliberately naive stand-in model).
+
+### 3. Add your OpenRouter key
+```bash
+cp .env-example .env
+```
+Open `.env` and paste your key after `OPENROUTER_API_KEY=`. Get a key at https://openrouter.ai: create an account, open "Keys", click "Create Key", copy it (shown once). The key is read only from `OPENROUTER_API_KEY` on the backend; `.env` is git-ignored, never commit it.
+No key? Leave it empty and the app runs in **mock mode** (a deterministic, deliberately naive stand-in model, no internet needed).
+
+### 4. Run the app
+```bash
+uv run uvicorn app.main:app --reload
+```
+`uv` creates the environment and installs the dependencies from `pyproject.toml` automatically. Open http://127.0.0.1:8000. Stop with Ctrl+C. The SQLite file `data.db` is created on first run.
+
+### 5. Use it
+1. On the landing page choose Sign up: this creates your team and makes you its manager.
+2. Manager: invite members (copy the invite link and send it yourself; no email is sent).
+3. My Assistant: chat with an agent. New Task: run `summary`, `planning` or `announcement` and watch the log.
+4. For an announcement the run pauses; review, edit and approve (or deny) before anything is posted.
+5. Switch Arabic/English from the UI; the Traces tab (manager) shows steps, tokens and cost.
+
+### 6. Run the tests and evals
+```bash
+uv run python security/test_injection.py   # prompt-injection test, exit code 1 on failure
+uv run python evals/run.py                 # writes evals/results.md
+```
+Both use a temporary database and work without a key (mock mode).
+
+### Without uv
+```bash
+python -m venv .venv && source .venv/bin/activate     # Windows: .venv\Scripts\activate
+pip install "fastapi>=0.110" "uvicorn[standard]" httpx "mcp>=1.2,<2" python-dotenv pydantic
+uvicorn app.main:app --reload
+```
+
+### Troubleshooting
+- Port 8000 busy: add `--port 8001`.
+- `uv: command not found`: reopen the terminal after installing uv.
+- Answers say "[mock mode...]": the key in `.env` is empty or not saved.
 
 ## Environment variables
 `OPENROUTER_API_KEY` (env only, backend only, never committed), `OPENROUTER_MODEL`, `OPENROUTER_FALLBACKS`, and optional `LLM_TIMEOUT` (20), `DAILY_REQUEST_CAP` (50), `MAX_TOOL_STEPS` (6), `RUN_TOKEN_BUDGET` (20000), `CHAT_TOKEN_BUDGET` (3000), `PRICE_PER_1K_TOKENS` (0.006), `DB_PATH`.
