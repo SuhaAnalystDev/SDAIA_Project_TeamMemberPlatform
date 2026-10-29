@@ -6,8 +6,6 @@ Author: Suha Abdulrahman
 
 Built for the [SDAIA Academy Agentic AI Systems Engineering capstone](https://sdaiaacademy.github.io/agentic-ai/): https://sdaiaacademy.github.io/agentic-ai/
 
-Repository: https://github.com/SuhaAnalystDev/SDAIA_Project_TeamMemberPlatform
-
 ## What it is
 A team workspace where a manager invites members; each member gets personal assistants, can run tasks (summary, day planning, announcement) and shares a team channel. Posting to the channel needs a human approval enforced in code, which blocks prompt-injection attacks.
 
